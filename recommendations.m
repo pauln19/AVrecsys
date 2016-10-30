@@ -10,8 +10,11 @@ for indexUser = 1:size(user_id)
     
     %retrieve user id
     user = user_id(indexUser,1);
-    %user disc and ind
+    %user discipline and industry
     id = userdiscind(userdiscind(:,1) == user,:);
+    
+    %user experience row
+    userExp = useryearsExp(indexUser, 2);
     %pick interactions for that user
     indexInteractions = find(interactions(:,1) == user);
     
@@ -30,7 +33,7 @@ for indexUser = 1:size(user_id)
             %if job is available, then continue
             if M(items,11) == 1
                 
-                if id(2) == M(items,4) && id(3) == M(items,5) %|| id(1) == 0 || id(2) == 0
+                if (id(2) == M(items,4) && id(3) == M(items,5)) || userExp> M(items,2) %|| id(1) == 0 || id(2) == 0
                     
                     denSumSim = 0;
                     numSumSim = 0;
