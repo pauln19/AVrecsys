@@ -19,7 +19,7 @@ for indexUser = 1:size(user_id)
     indexInteractions = find(interactions(:,1) == user);
     
     %if no interactions, then most popular
-    if (indexInteractions == 0)
+    if  indexInteractions < 15
         
         region = usercountries(usercountries(:,1) == user,2);
         fiveBestJobs = mostPopularPerRegion( region );
