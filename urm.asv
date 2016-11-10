@@ -1,0 +1,16 @@
+v = [1:size(usercareerlevel,1)].';
+userMap = containers.Map(sort(usercareerlevel(:,1)),v);
+
+v = [1:size(M,1)].';
+itemMap = containers.Map(M(:,1),v);
+
+for i = 1:size(interactions,1)
+    
+    user = values(userMap,interactions(i,1));
+    item = values(itemMap,interactions(i,2));
+    
+    sparseI = [sparseI cell2mat(user)];
+    sparseJ = [sparseJ cell2mat(item)];
+    sparseV = [sparseV 
+    
+end
