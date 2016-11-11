@@ -1,12 +1,13 @@
-function [s] = computeSimilarity(v1, v2, h)
+function [sim] = computeSimilarity(item1, item2)
+load('itemMap.mat');
+load('urm.mat');
 
-%dot product
-num = dot(v1,v2);
-%num = bitand(v1,v2);
+col1 = cell2mat(values(itemMap,num2cell(item1)));
+col2 = cell2mat(values(itemMap,num2cell(item2)));
 
-%product between norms plus shrink
-den = norm(v1) * norm(v2) + h;
+col1 = full(URM(:,col1)).';
+col2 = full(URM(:,col2)).';
 
-s = num/den;
+sim = dot(col1,col2)/ (norm(col1) * norm(col2));
 
 end
