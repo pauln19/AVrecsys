@@ -6,28 +6,35 @@
 % end
 
 
-
+load('icm.mat');
+load('interactions.mat');
+load('user_id.mat');
+load('itemMap.mat');
+load('itemProfiles.mat');
+load('usercountries.mat');
 %inizializzo la rete neurale
 net = feedforwardnet(10);
 %net.performFcn = 'mse';
 net.trainParam.epochs = 100;
 net.divideFcn = '';
 net.trainParam.showWindow=0; 
-
+out = zeros(10000,6);
 % values(itemMap, id_Job) -> index rows in icm for that job
 for j=1:10000
+    clear A;
     %prendo le interazioni dell'utente che sto analizzando
     userInteraction = find(interactions(:,1) == user_id(j));
     job = interactions(userInteraction,2);
     %job not interacted with
     %jobInteracted = find(not(ismember(interactions(:,1),userInteraction(:,1))));
     jobInteracted = intersect(job(:,1), M(:,1));
-    if(size(jobInteracted,1)>15)
+    if(size(jobInteracted,1)>60)
         jobNotInteracted = setdiff(M(:,1), jobInteracted(:,1));
         jobIdsToTest = intersect(jobNotInteracted(:,1), M(find(M(:,11)==1),1));
         rowsInIcm = cell2mat(values(itemMap, num2cell(jobIdsToTest)));
         jobToTest = icm(rowsInIcm,:).';
-        finalJobToTest = jobToTest(:,1:9999);
+        randomToTest = randi(size(jobToTest,1),9999,1);
+        finalJobToTest = jobToTest(:,randomToTest);
         clear jobToTest;
         random = randi(size(jobNotInteracted,1), size(jobInteracted,1), 1);
         %target = zeros(1,size(jobInteracted,1)*2);
@@ -37,15 +44,20 @@ for j=1:10000
         %trainingSet = zeros(45111, size(jobInteracted,1));
         %Vedere sopra per la vecchia versione con il for
         indexJobInteractedIcm = cell2mat(values(itemMap, num2cell(jobInteracted)));
-        trainingSet = icm(indexJobInteractedIcm,:).';
-        
+        trainingSet = icm(indexJobInteractedIcm,:).';        
         notInteractedItems = icm(random, :);
         trainingSet = horzcat(trainingSet, full(notInteractedItems).');
         %target(size(jobInteracted):end) = -1;
-        A(1:1, 1:size(jobInteracted)) = -1; 
+        A(1:1, 1:size(jobInteracted,1)) = -1; 
         target = horzcat(target, A);
-        clear A;
-        [net,tr] = train(net, full(trainingSet), target);
-        out = sim(net, finalJobToTest);
-    end  
+        [net] = train(net, full(trainingSet), target);
+        outcomes = sim(net, full(finalJobToTest));
+        [Y, I] = sort(outcomes,'descend');
+        I = I(1:5);
+        chosenIds = jobIdsToTest(randomToTest).';
+        out(j,:) = [user_id(j) chosenIds(I)];
+    else
+        userRegion = usercountries(find(usercountries(:,1) == user_id(j)),2);
+        out(j,:) = [user_id(j) mostPopularPerRegion(userRegion, jobNotInteracted).'];
+    end
 end
