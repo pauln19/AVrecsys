@@ -1,3 +1,6 @@
+%ERRORE: URM ha ultima interazione con l'utente (non tiene conto di
+%interazioni multiple tra user e item
+
 v = [1:size(usercareerlevel,1)].';
 userMap = containers.Map(sort(usercareerlevel(:,1)),v);
 
