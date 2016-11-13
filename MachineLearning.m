@@ -27,10 +27,11 @@ for j=1:10000
     job = interactions(userInteraction,2);
     %job not interacted with
     %jobInteracted = find(not(ismember(interactions(:,1),userInteraction(:,1))));
-    jobInteracted = intersect(job(:,1), M(:,1));
-    if(size(jobInteracted,1)>60)
-        jobNotInteracted = setdiff(M(:,1), jobInteracted(:,1));
-        jobIdsToTest = intersect(jobNotInteracted(:,1), M(find(M(:,11)==1),1));
+    jobInteracted = intersect(job(:,1), itemprofiles(:,1));
+    jobNotInteracted = setdiff(itemprofiles(:,1), jobInteracted(:,1));
+    %substituing item profiles with M
+    if(size(jobInteracted,1)>25)
+        jobIdsToTest = intersect(jobNotInteracted(:,1), itemprofiles(find(itemprofiles(:,11)==1),1));
         rowsInIcm = cell2mat(values(itemMap, num2cell(jobIdsToTest)));
         jobToTest = icm(rowsInIcm,:).';
         randomToTest = randi(size(jobToTest,1),9999,1);
@@ -59,5 +60,6 @@ for j=1:10000
     else
         userRegion = usercountries(find(usercountries(:,1) == user_id(j)),2);
         out(j,:) = [user_id(j) mostPopularPerRegion(userRegion, jobNotInteracted).'];
+        
     end
 end

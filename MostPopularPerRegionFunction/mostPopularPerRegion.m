@@ -17,7 +17,7 @@ load('mostPopularInNoNDach.mat');
             %do something with ch
             recommandableItems = intersect(mostPopularInCh(:,1), userInteractions(:,1));
             recc = recommandableItems(1:5);
-        case 4
+        otherwise
             %do something with non_dach
             recommandableItems = intersect(mostPopularInNoNDach(:,1), userInteractions(:,1));
             recc = recommandableItems(1:5);
