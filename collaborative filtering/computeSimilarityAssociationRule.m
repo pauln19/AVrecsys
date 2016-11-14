@@ -14,9 +14,8 @@ load('urm.mat');
 indexItem1 = values(itemMap,num2cell(item1));
 indexItem2 = values(itemMap,num2cell(item2));
 
-%TODO
 sim = sum(bitand(full(logical(URM(:,cell2mat(indexItem1)))), ...
-    full(logical(URM(:,cell2mat(indexItem2)))))) ...
-    / sum(logical(URM(:,cell2mat(indexItem2))));
+    full(logical(URM(:,cell2mat(indexItem2))))));
+    %/ sum(logical(URM(:,cell2mat(indexItem2))));
 
 end
