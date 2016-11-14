@@ -1,11 +1,15 @@
-%ERRORE: URM ha ultima interazione con l'utente (non tiene conto di
-%interazioni multiple tra user e item
+% %ERRORE: URM ha ultima interazione con l'utente (non tiene conto di
+% %interazioni multiple tra user e item
+
+load('usercareerlevel.mat');
+load('interactions.mat');
+load('itemMap.mat');
 
 v = [1:size(usercareerlevel,1)].';
 userMap = containers.Map(sort(usercareerlevel(:,1)),v);
 
-v = [1:size(M,1)].';
-itemMap = containers.Map(M(:,1),v);
+% v = [1:size(M,1)].';
+% itemMap = containers.Map(M(:,1),v);
 
 sparseI = zeros(1,size(interactions,1));
 sparseJ = zeros(1,size(interactions,1));
@@ -22,4 +26,13 @@ for i = 1:size(interactions,1)
     
 end
 
-URM = sparse(sparseI, sparseJ, sparseV);
+[S, ~, ic] = unique([sparseI.' sparseJ.'],'rows');
+Sb = zeros(1,size(S,1));
+
+for i = 1:size(sparseV,2)
+    
+    Sb(1,ic(i,1)) = Sb(1,ic(i,1)) + sparseV(1,i);
+    
+end
+
+URM = sparse(S(:,1), S(:,2), Sb);
