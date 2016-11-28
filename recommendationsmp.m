@@ -12,7 +12,8 @@ for indexUser = 1:size(user_id)
     
     userInteractions = interactions(interactions(:,1) == user_id(indexUser),2);
     %region = usercountries(usercountries(:,1) == user,2);
-    tmp = setdiff(n_interactionsPerItem(:,2),intersect(n_interactionsPerItem(:,2),userInteractions(:,1)),'stable');
+    tmp = setdiff(n_interactionsPerItem(:,2),...
+        intersect(n_interactionsPerItem(:,2),userInteractions(:,1)),'stable');
     
     fiveBestJobs = tmp(1:5,1).';
     rec(indexUser,:) = [rec(indexUser) fiveBestJobs];

@@ -1,17 +1,25 @@
-function [rating] = computeRating(item,userInteractions)
+function [rating] = computeRating(item,userInteractions,itemMap,URM)
 
-num = zeros(1,size(userInteractions,1));
-den = 0;
+% num = zeros(1,size(userInteractions,1));
+% den = 0;
+% 
+% for j = 1:size(userInteractions,1)
+%     
+%     a = computeSimilarityAssociationRule(userInteractions(j,1),item);
+%     num(j) = userInteractions(j,2) * a;
+%     den = den + a;
+%     
+% end
+% 
+% rating = sum(num)/den;
+
+rating = 0;
 
 for j = 1:size(userInteractions,1)
     
-    a = computeSimilarityAssociationRule(userInteractions(j,1),item);
-    num(j) = userInteractions(j,2) * a;
-    den = den + a;
+    rating = rating + computeSimilarityAssociationRule(userInteractions(j,1),item,itemMap,URM);
     
 end
-
-rating = sum(num)/den;
 
 end
 
