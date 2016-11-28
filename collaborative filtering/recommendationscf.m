@@ -15,14 +15,15 @@ URM = logical(URM);
 URM = double(URM);
 
 %final recommendations matrix
-rec = [user_id zeros(size(user_id,1),5)];
+%rec = [user_id zeros(size(user_id,1),5)];
+load('rec1763.mat');
 
 %recommandable items id and number
 itemsAvailable = itemprofiles(itemprofiles(:,11) == 1,1);
 itemsAvailableIndex = find(itemprofiles(:,11) == 1);
 
 %loop on every target user
-for indexUser = 1:size(user_id)
+for indexUser = 1764:size(user_id)
     
     %5 best jobs per user
     fiveBestRat = [0 0 0 0 0];
