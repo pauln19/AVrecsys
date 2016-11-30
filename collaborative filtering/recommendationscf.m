@@ -15,16 +15,15 @@ URM = logical(URM);
 URM = double(URM);
 
 %final recommendations matrix
-%rec = [user_id zeros(size(user_id,1),5)];
-load('rec1763.mat');
+rec = [user_id zeros(size(user_id,1),5)];
 
 %recommandable items id and number
 itemsAvailable = itemprofiles(itemprofiles(:,11) == 1,1);
 itemsAvailableIndex = find(itemprofiles(:,11) == 1);
 
 %loop on every target user
-for indexUser = 1764:size(user_id)
-    
+for indexUser = 1:numel(user_id)
+    tic
     %5 best jobs per user
     fiveBestRat = [0 0 0 0 0];
     fiveBestJobs = [0 0 0 0 0];
@@ -39,21 +38,21 @@ for indexUser = 1764:size(user_id)
     %items recommandable for the user
     %     [remainingItems, index] = setdiff(itemsAvailable(:,1),userInteractionsTmp);
     
-    [remainingItems, ~] = setdiff(itemsAvailable(:,1),userInteractions);
+    remainingItems = setdiff(itemsAvailable(:,1),userInteractions);
     remainingIndex = setdiff(itemsAvailableIndex(:,1),userInteractionsIndex);
     
-%     [remainingItems, index] = setdiff(itemsAvailable(:,1),userInteractions);
-%     remainingItems(:,2) = itemsAvailable(index,2);
-%     
-%     %filter by years of experience
-%     if useryearsExp(useryearsExp(:,1) == user_id(indexUser),2) ~= 0
-%         remainingItems = remainingItems(remainingItems(:,2) ...
-%             < useryearsExp(useryearsExp(:,1) == user_id(indexUser),2),1);
-%     end
-%     %filter by top 150 interacted
-%     remainingItems = intersect(n_interactionsPerItem(:,2),remainingItems,'stable');
-%     
-%     topRemainingItems = remainingItems(1:min(150,length(remainingItems)),1);
+    %     [remainingItems, index] = setdiff(itemsAvailable(:,1),userInteractions);
+    %     remainingItems(:,2) = itemsAvailable(index,2);
+    %
+    %     %filter by years of experience
+    %     if useryearsExp(useryearsExp(:,1) == user_id(indexUser),2) ~= 0
+    %         remainingItems = remainingItems(remainingItems(:,2) ...
+    %             < useryearsExp(useryearsExp(:,1) == user_id(indexUser),2),1);
+    %     end
+    %     %filter by top 150 interacted
+    %     remainingItems = intersect(n_interactionsPerItem(:,2),remainingItems,'stable');
+    %
+    %     topRemainingItems = remainingItems(1:min(150,length(remainingItems)),1);
     
     %     %group by items with the max value of interactions (between 1 and 3)
     %     [uv,~,idx] = unique(userInteractionsTmp(:,1));
@@ -68,17 +67,17 @@ for indexUser = 1764:size(user_id)
     else
         
         
-%         for remitems = 1:size(topRemainingItems,1)
+        %         for remitems = 1:size(topRemainingItems,1)
         for remitems = 1:size(remainingItems,1)
             
-%             estRat = computeRating(topRemainingItems(remitems), userInteractions, itemMap, URM);
-%             estRat = computeRating(remainingItems(remitems), userInteractions, itemMap, URM);
-            estRat = computeRating(remainingIndex(remitems), userInteractionsIndex, itemMap, URM);
+            %             estRat = computeRating(topRemainingItems(remitems), userInteractions, itemMap, URM);
+            %             estRat = computeRating(remainingItems(remitems), userInteractions, itemMap, URM);
+            estRat = computeRating(remainingIndex(remitems), userInteractionsIndex, URM);
             if estRat > min(fiveBestRat)
                 
                 [~,i] = min(fiveBestRat);
                 fiveBestRat(i) = estRat;
-%                 fiveBestJobs(i) = topRemainingItems(remitems);
+                %                 fiveBestJobs(i) = topRemainingItems(remitems);
                 fiveBestJobs(i) = remainingItems(remitems);
                 
             end
@@ -95,6 +94,8 @@ for indexUser = 1764:size(user_id)
         usercountries(usercountries(:,1) == user_id(indexUser),2),...
         userInteractions.',size(find(sortedFiveBestJobs == 0),2));
     
-    rec(indexUser,:) = [rec(indexUser) sortedFiveBestJobs];
+    rec(indexUser,2:end) = sortedFiveBestJobs;
+    
+    toc
     
 end
