@@ -16,16 +16,16 @@ URM = double(URM);
 
 %final recommendations matrix
 %rec = [user_id zeros(size(user_id,1),5)];
-load('rec1470.mat');
+load('rec1305.mat');
 
 %recommandable items id and number
 itemsAvailable = itemprofiles(itemprofiles(:,11) == 1,1);
 itemsAvailableIndex = find(itemprofiles(:,11) == 1);
 
 %loop on every target user
-for indexUser = 1471:numel(user_id)
+for indexUser = 1306:numel(user_id)
     
-    %tic
+    tic
     %5 best jobs per user
     fiveBestRat = [0 0 0 0 0];
     fiveBestJobs = [0 0 0 0 0];
@@ -52,12 +52,12 @@ for indexUser = 1471:numel(user_id)
     %             < useryearsExp(useryearsExp(:,1) == user_id(indexUser),2),1);
     %     end
         %filter by top 150 interacted
-%         [remainingItems, ~, ib] = intersect(n_interactionsPerItem(:,2),remainingItems,'stable');
-%         remainingIndex = remainingIndex(ib);
-% %         topRemainingItems = remainingItems(1:min(150,length(remainingItems)),1);
-%         remainingItems = remainingItems(1:min(150,length(remainingItems)),1);
-%         remainingIndex = ...
-%         remainingIndex(1:min(150,length(remainingIndex)),1);
+        [remainingItems, ~, ib] = intersect(n_interactionsPerItem(:,2),remainingItems,'stable');
+        remainingIndex = remainingIndex(ib);
+        topRemainingItems = remainingItems(1:min(150,length(remainingItems)),1);
+        remainingItems = remainingItems(1:min(150,length(remainingItems)),1);
+        remainingIndex =
+        remainingIndex(1:min(150,length(remainingIndex)),1);
     
     %     %group by items with the max value of interactions (between 1 and 3)
     %     [uv,~,idx] = unique(userInteractionsTmp(:,1));
@@ -101,6 +101,6 @@ for indexUser = 1471:numel(user_id)
     
     rec(indexUser,2:end) = sortedFiveBestJobs;
     
-    %toc
+    toc
     
 end
