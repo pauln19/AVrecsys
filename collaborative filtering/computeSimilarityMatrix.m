@@ -3,6 +3,7 @@ function D = computeSimilarityMatrix( URM, itemprofiles)
 %   Detailed explanation goes here
 % ~
     D = containers.Map('KeyType', 'double', 'ValueType', 'any');
+    
 %     result = zeros(1, 167956);
     for i=1:size(URM,2)
         userRatedItemi = find(URM(:,i) ~= 0);
