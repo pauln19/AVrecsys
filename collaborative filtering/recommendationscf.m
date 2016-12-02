@@ -10,22 +10,22 @@ load('jobInteractedByTargetUserIndex.mat');
 load('itemMap.mat');
 load('URM_2.mat');
 load('usercountries.mat');
+load('top60SimilarItems.mat');
 
 URM = logical(URM);
 URM = double(URM);
 
 %final recommendations matrix
-%rec = [user_id zeros(size(user_id,1),5)];
-load('rec1470.mat');
+rec = [user_id zeros(size(user_id,1),5)];
+%load('rec5000_5170.mat');
 
 %recommandable items id and number
 itemsAvailable = itemprofiles(itemprofiles(:,11) == 1,1);
 itemsAvailableIndex = find(itemprofiles(:,11) == 1);
 
 %loop on every target user
-for indexUser = 1471:numel(user_id)
+for indexUser = 1:numel(user_id)
     
-    %tic
     %5 best jobs per user
     fiveBestRat = [0 0 0 0 0];
     fiveBestJobs = [0 0 0 0 0];
@@ -77,7 +77,7 @@ for indexUser = 1471:numel(user_id)
             
             %             estRat = computeRating(topRemainingItems(remitems), userInteractions, itemMap, URM);
             %             estRat = computeRating(remainingItems(remitems), userInteractions, itemMap, URM);
-            estRat = computeRating(remainingIndex(remitems), userInteractionsIndex, URM);
+            estRat = computeRating(remainingIndex(remitems), userInteractionsIndex, URM, similarItems);
             if estRat > min(fiveBestRat)
                 
                 [~,i] = min(fiveBestRat);
@@ -100,7 +100,5 @@ for indexUser = 1471:numel(user_id)
         userInteractions.',size(find(sortedFiveBestJobs == 0),2));
     
     rec(indexUser,2:end) = sortedFiveBestJobs;
-    
-    %toc
     
 end

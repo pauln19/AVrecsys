@@ -1,4 +1,4 @@
-function [rating] = computeRating(indexItem,userInteractions,URM)
+function [rating] = computeRating(indexItem,userInteractions,URM, similarItems)
 
 % num = zeros(1,size(userInteractions,1));
 % den = 0;
@@ -15,11 +15,32 @@ function [rating] = computeRating(indexItem,userInteractions,URM)
 
 rating = 0;
 
-for j = userInteractions
+if (isKey(similarItems, indexItem))
     
-    rating = rating + computeSimilarityAssociationRule(j,indexItem,URM);
-    
+    v = values(similarItems, num2cell(userInteractions));
+    for j = userInteractions
+        
+        cella = v{1};
+        
+        if find(cella{1} == j)
+            rating = rating + cella{2}(cella{1} == j);
+            
+        else
+        
+            %rating = rating + computeSimilarityAssociationRule(j,indexItem,URM);
+        
+        end
+    end
 end
+
+
+
+% if (any(URM(:,indexItem)))
+%     %prende la similarity tra le interazioni e l'item che sto considerando 
+%     for j = userInteractions
+%             rating = rating + values(1);
+%     end
+% end
 
 end
 
