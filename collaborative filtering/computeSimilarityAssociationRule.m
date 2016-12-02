@@ -25,6 +25,6 @@ function [sim] = computeSimilarityAssociationRule(indexItem1, indexItem2, URM)
 %     / (sum(URM(:,indexItem2)) + 2);
  sim = URM(:,indexItem1)'* ...
             URM(:,indexItem2) ...
-            / (norm(URM(:,indexItem1)) + norm(URM(:,indexItem2)) + 20);
+            / (norm(URM(:,indexItem1)) * norm(URM(:,indexItem2)) + 20);
 
 end

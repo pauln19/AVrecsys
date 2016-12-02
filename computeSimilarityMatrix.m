@@ -2,24 +2,28 @@ function D = computeSimilarityMatrix( URM, itemprofiles)
 %COMPUTESIMILARITYMATRIX Summary of this function goes here
 %   Detailed explanation goes here
 % ~
-    D = containers.Map('KeyType', 'double', 'ValueType', 'any');
-    
+    URM = logical(URM);
+    D = containers.Map;
 %     result = zeros(1, 167956);
+%   Loop on items
     for i=1:size(URM,2)
-        userRatedItemi = find(URM(:,i) ~= 0);
-        for j=1:size(userRatedItemi,1)
-            itemsRatedFromUsers = find(URM(userRatedItemi(j),:) ~= 0);
+        %   Index of users who rated item i
+        userRatedItems = find(URM(:,i) ~= 0);
+        %   Loop on previous users
+        for j=1:size(userRatedItems,1)
+            %   Index of items rated by user j
+            itemsRatedFromUsers = find(URM(userRatedItems(j),:) ~= 0);
             sim = zeros(size(itemsRatedFromUsers,2),1);
-            for k=1:size(itemsRatedFromUsers,2) 
+            %   Loop on previous items
+            for k=1:size(itemsRatedFromUsers,2)
                 if(itemsRatedFromUsers(1,k)~= i)
                      sim(k) = computeSimilarityAssociationRule(i, itemsRatedFromUsers(k), URM);
                 end
             end
             [sims, id] = sort(sim, 'descend');
-            sims(min(size(itemsRatedFromUsers,2),60)+1:end) = [];
-            id(min(size(itemsRatedFromUsers,2),60)+1:end) = [];
-            value = {itemsRatedFromUsers(id), sims};
-            D(i) = value; 
+            sims(min(size(itemsRatedFromUsers,2),60):end) = []
+            id(min(size(itemsRatedFromUsers,2),60):end) = []
+            
             %D(i) = [sims, itemRatedFromUsers(id)]};
             %result = pdist2(URM(:,i), URM(:,itemsRatedFromUsers), 'cosine');
         end
