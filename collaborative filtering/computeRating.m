@@ -14,24 +14,26 @@ function [rating] = computeRating(indexItem,userInteractions,URM, similarItems)
 % rating = sum(num)/den;
 
 rating = 0;
-
-if (isKey(similarItems, indexItem))
-    
-    v = values(similarItems, num2cell(userInteractions));
-    for j = userInteractions
-        
-        cella = v{1};
-        
-        if find(cella{1} == j)
-            rating = rating + cella{2}(cella{1} == j);
-            
-        else
-        
-            %rating = rating + computeSimilarityAssociationRule(j,indexItem,URM);
-        
-        end
-    end
+for j = userInteractions
+    rating = rating + computeSimilarityAssociationRule(j,indexItem,URM);
 end
+% if (isKey(similarItems, indexItem))
+%     
+%     v = values(similarItems, num2cell(userInteractions));
+%     for j = userInteractions
+%         
+%         cella = v{1};
+%         
+%         if find(cella{1} == j)
+%             rating = rating + cella{2}(cella{1} == j);
+%             
+%         else
+%         
+%             %rating = rating + computeSimilarityAssociationRule(j,indexItem,URM);
+%         
+%         end
+%     end
+% end
 
 
 

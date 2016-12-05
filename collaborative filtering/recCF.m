@@ -1,6 +1,6 @@
 %Per ogni utente, devo prendere le sue interazioni;
 %creo keyset con num2cell;
-%prendo dalla mappa le celle con le top60 delle interazioni;
+%prendo dalla mappa le celle con le top delle interazioni;
 %filtro quelle non attive e che utente non ha votato;
 %pseudo group by sommando il rating tra le varie interazioni che rimangono
 function [rec] = recCF(user_id, jobIntByTarUser2, topSimilarItems, itemprofiles)
@@ -14,12 +14,12 @@ rec = [user_id zeros(numel(user_id),5)];
 itemsAvailableIndex = find(itemprofiles(:,11) == 1);
 
 %Loop on all the users to recommend
-for userIndex = 10000:numel(user_id)
-    
+for userIndex = 1:numel(user_id)
+    tic
     %Pick /userIndex\ interactions and transform into keySet
     userInteractionsIndex = jobIntByTarUser2{userIndex};
     
-    if ~isempty(userInteractionsIndex)
+    if ~isempty(userInteractionsIndex) && any(isKey(topSimilarItems,num2cell(userInteractionsIndex)))
         
         %Pick the items that are still active and that the user hasn't
         %interacted yet
@@ -36,21 +36,22 @@ for userIndex = 10000:numel(user_id)
         
         for i = 1:numel(v)
             
-            items = (v{1,i}{1,1})';
-            similarities = v{1,i}{1,2};
-            
-            [items, ia, ~] = intersect(items,remainingIndex);
-            similarities = similarities(ia);
-            
-            itemsSimilarities = [itemsSimilarities; items similarities];
-            
+            if ~((userIndex == 9401 && i == 2) || (userIndex == 9935 && i == 1))
+                items = v{1,i}(:,1);
+                similarities = v{1,i}(:,2);
+                
+                [items, ia, ~] = intersect(items,remainingIndex);
+                similarities = similarities(ia);
+                
+                itemsSimilarities = [itemsSimilarities; items similarities];
+            end
         end
         
         [uv,~,idx] = unique(itemsSimilarities(:,1));
         v = accumarray(idx,itemsSimilarities(:,2),[],@sum);
         itemsSimilarities = [uv v];
         
-        [~, ia] = sort(itemsSimilarities(:,2));
+        [~, ia] = sort(itemsSimilarities(:,2),'descend');
         
         itemIndex = itemsSimilarities(ia,1);
         
@@ -72,5 +73,5 @@ for userIndex = 10000:numel(user_id)
     else
         rec(userIndex, 2:end) = top;
     end
-    
+    toc
 end
