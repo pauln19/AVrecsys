@@ -15,6 +15,12 @@ sizeX_URM = size(URM,1);
 Y = rand(sizeY_URM,f);
 X = zeros(sizeX_URM,f);
 
+I_X = speye(sizeX_URM);
+I_Y = speye(sizeY_URM);
+I_f = eye(f);
+
+URM = double(logical(URM));
+
 %   Loop for *sweep* times
 for n = 1:sweep
 
@@ -30,12 +36,10 @@ for u = targetUserIndex'
 %     for i = 1:sizeY_URM
 %         err(i) = abs(double(logical(URM(u,i))) - X(u,:) * Y(i,:)');
 %     end
-    
     tic
     
-    C_u = speye(sizeY_URM) + 40 * diag(URM(u,:));
-    p = double(logical(URM(u,:)))';
-    X(u,:) = inv(A + Y' * (C_u - speye(sizeY_URM)) * Y + lambda * eye(f)) * Y' * C_u * p;
+    C_u = I_Y + 40 * diag(URM(u,:));
+    X(u,:) = (A + Y' * (C_u - I_Y) * Y + lambda * I_f)^-1 * Y' * C_u * URM(u,:)';
     
     toc
     
@@ -53,9 +57,8 @@ for i = 1:sizeY_URM
     
     tic
     
-    C_i = speye(sizeX_URM) + 40 * diag(URM(:,i));
-    p = double(logical(URM(:,i)))';
-    Y(:,i) = inv(B + X' * (C_i - speye(sizeX_URM)) * X + lambda * eye(f)) * X' * C_i * p;
+    C_i = I_X + 40 * diag(URM(:,i));
+    Y(:,i) = inv(B + X' * (C_i - I_X) * X + lambda * I_f) * X' * C_i * URM(:,i)';
     
     toc
     
