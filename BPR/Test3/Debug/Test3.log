@@ -1,0 +1,6 @@
+﻿  Test3.cpp
+c:\users\gyo15\documents\visual studio 2015\projects\test3\test3\test3.cpp(16): warning C4101: 'buffer': unreferenced local variable
+c:\users\gyo15\documents\visual studio 2015\projects\test3\test3\test3.cpp(31): warning C4101: 'value': unreferenced local variable
+c:\users\gyo15\documents\visual studio 2015\projects\test3\test3\test3.cpp(31): warning C4101: 'column': unreferenced local variable
+c:\users\gyo15\documents\visual studio 2015\projects\test3\test3\test3.cpp(31): warning C4101: 'row': unreferenced local variable
+  Test3.vcxproj -> C:\Users\gyo15\Documents\Visual Studio 2015\Projects\Test3\Debug\Test3.exe
