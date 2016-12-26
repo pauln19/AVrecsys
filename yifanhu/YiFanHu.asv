@@ -9,6 +9,8 @@ function [] = YiFanHu( URM, lambda, f, targetUserIndex, sweep )
 
 %   I don't compute confidence matrix since is m x n
 
+profile on
+
 sizeY_URM = size(URM,2);
 sizeX_URM = size(URM,1);
 
@@ -18,8 +20,6 @@ X = zeros(sizeX_URM,f);
 I_X = speye(sizeX_URM);
 I_Y = speye(sizeY_URM);
 I_f = eye(f);
-
-URM = double(logical(URM));
 
 %   Loop for *sweep* times
 for n = 1:sweep
@@ -36,10 +36,14 @@ for u = targetUserIndex'
 %     for i = 1:sizeY_URM
 %         err(i) = abs(double(logical(URM(u,i))) - X(u,:) * Y(i,:)');
 %     end
+    if u == 3979
+        profile viewer
+    end
     tic
     
     C_u = I_Y + 40 * diag(URM(u,:));
-    X(u,:) = (A + Y' * (C_u - I_Y) * Y + lambda * I_f)^-1 * Y' * C_u * URM(u,:)';
+    p = double(logical(URM(u,:)))';
+    X(u,:) = inv(A + Y' * (C_u - I_Y) * Y + lambda * I_f) * Y' * C_u * p;
     
     toc
     
@@ -58,7 +62,8 @@ for i = 1:sizeY_URM
     tic
     
     C_i = I_X + 40 * diag(URM(:,i));
-    Y(:,i) = inv(B + X' * (C_i - I_X) * X + lambda * I_f) * X' * C_i * URM(:,i)';
+    p = double(logical(URM(:,i)))';
+    Y(:,i) = inv(B + X' * (C_i - I_X) * X + lambda * I_f) * X' * C_i * p;
     
     toc
     
