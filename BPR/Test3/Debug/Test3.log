@@ -1,6 +1,3 @@
-﻿  Test3.cpp
-c:\users\gyo15\documents\visual studio 2015\projects\test3\test3\test3.cpp(16): warning C4101: 'buffer': unreferenced local variable
-c:\users\gyo15\documents\visual studio 2015\projects\test3\test3\test3.cpp(31): warning C4101: 'value': unreferenced local variable
-c:\users\gyo15\documents\visual studio 2015\projects\test3\test3\test3.cpp(31): warning C4101: 'column': unreferenced local variable
-c:\users\gyo15\documents\visual studio 2015\projects\test3\test3\test3.cpp(31): warning C4101: 'row': unreferenced local variable
-  Test3.vcxproj -> C:\Users\gyo15\Documents\Visual Studio 2015\Projects\Test3\Debug\Test3.exe
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Test3.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Test3.cpp
+  Test3.vcxproj -> C:\Users\gyo15\Documents\RecSysProj\Project Repository\AVrecsys\BPR\Debug\BPR.exe
