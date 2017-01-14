@@ -7,41 +7,86 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <assert.h>
 
 using namespace std;
 
-void parseBlock(string s)
+SparseMatrix<float> generateSparseRandomMatrix(int num_rows, int num_cols)
 {
-	size_t pos = 0;
-	char buffer[10000];
-	
-	string token;
-	
-	while ((pos = s.find('\n')) != string::npos)
+	SparseMatrix<float> result(num_rows, num_cols);
+	for (int i = 0; i < 600; i++)
 	{
-		token = s.substr(0, pos);
-		s.erase(0, pos + 1);
-		cout << token + '\n';
+		int row = rand() % num_rows + 1;
+		int col = rand() % num_cols + 1;
+		int value = rand();
+		result.set(value, row, col);
 	}
+	return result;
+}
+
+SparseMatrix<float> generateIdentityMatrix(int num_rows)
+{
+	SparseMatrix<float> result(num_rows);
+	for (int i = 1; i <= num_rows; i++)
+		result.set(1, i, i);
+	return result;
 }
 int main()
 {
-	int i = 0;
 	ios_base::sync_with_stdio(false);
-	FILE * fp;
-	char buff[256];
-	size_t n_read;
-	fp = std::fopen("URM.txt", "r");
-	if (fp) {
-		while ((n_read = fread(buff, 1, sizeof buff, fp)) > 0)
-			fwrite(buff, 1, n_read, stdout);
-	}
-	fclose(fp);
-	int row, column, value;
-	string line, line2;
+	SparseMatrix<__int8> sparse_urm(40000, 167956);
+	SparseMatrix<float> Y(167956, 40);
+	SparseMatrix<float> Yt(40, 167956);
+	SparseMatrix<float> A(40);
+	SparseMatrix<float> C_u(167956);
+	SparseMatrix<float> I_f(40);
+	SparseMatrix<float> X(40000, 40);
+	vector<float> riga(40000);
+	//FILE * fp;
+	//char buff[2049];
+	//char *ch;
+	//size_t n_read;
+	//fp = std::fopen("urm.txt", "r");
+	//if (fp) {
+	//	while ((n_read = fread(buff, 1, sizeof buff - 1, fp)) > 0)
+	//	{
+	//		buff[2048] = '\0';
+	//		ch = strtok(buff, "\n");
+	//		while (ch != NULL)
+	//		{
+	//			printf("%s\n", ch);
+	//			ch = strtok(NULL, "\n");
+	//		}
+	//			
+	//	}
+	//}
+	//fclose(fp);
 	ifstream urm ("URM.txt");
 
-	SparseMatrix<__int8> sparse_urm(40000,167956);
+	int col, row, value;
+	while (urm >> row >> col >> value)
+	{
+		sparse_urm.set(1, row, col);
+	}
+
+	I_f = generateIdentityMatrix(40);
+	Y = generateSparseRandomMatrix(167956, 40);
+	Yt = Y.transpose();
+	for (int n = 0; n < 9; n++)
+	{
+		A = Yt.multiply(Y);
+		for (int u = 1; u <= 40000; u++)
+		{
+			vector<__int8> urmRow = sparse_urm.getRow(u);
+			for (int i = 1; i <= 167956; i++)
+			{
+				C_u.set(40 * urmRow[i - 1], i, i);
+			}
+			//Lamba is 10
+			//TODO:: riga = A + Yt * C_u * Y + I_f.multiply(10);
+		}
+	}
+	//
 	//if (urm.is_open())
 	//{
 	//	while (!urm.eof())
@@ -64,7 +109,7 @@ int main()
 	//	}
 	//
 	//}
-	cout << "Finished!";
+	cout << "Finished!" + NULL;
 	urm.close();
 	system("pause");
 	return 0;
