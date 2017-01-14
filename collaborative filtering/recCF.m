@@ -3,12 +3,12 @@
 %prendo dalla mappa le celle con le top delle interazioni;
 %filtro quelle non attive e che utente non ha votato;
 %pseudo group by sommando il rating tra le varie interazioni che rimangono
-function [rec] = recCF(user_id, jobIntByTarUser2, topSimilarItems, itemprofiles)
-
-top = [1053452 2778525 1244196 1386412 657183];
+function [rec] = recCF(user_id, jobIntByTarUser2, topSimilarItems, itemprofiles, n_interactionsPerItemIndex)
 
 %final recommendations matrix
 rec = [user_id zeros(numel(user_id),5)];
+
+userCFSim = containers.Map('KeyType','double','ValueType','any');
 
 %Items with the 1 flag
 itemsAvailableIndex = find(itemprofiles(:,11) == 1);
@@ -53,25 +53,35 @@ for userIndex = 1:numel(user_id)
         
         [~, ia] = sort(itemsSimilarities(:,2),'descend');
         
+        %Salvo mappa per utente con similarities        
+        userCFSim(user_id(userIndex)) = itemsSimilarities(ia,:);
+        
         itemIndex = itemsSimilarities(ia,1);
+        
+        top = setdiff(n_interactionsPerItemIndex(:,1),userInteractionsIndex','stable');
         
         switch numel(itemIndex)
             case 0
-                rec(userIndex, 2:end) = top;
+                rec(userIndex, 2:end) = itemprofiles(top(1:5))';
             case 1
-                rec(userIndex, 2:end) = [itemprofiles(itemIndex,1) top(1:4)];
+                rec(userIndex, 2:end) = [itemprofiles(itemIndex,1) itemprofiles(top(1:4))'];
             case 2
-                rec(userIndex, 2:end) = [itemprofiles(itemIndex,1)' top(1:3)];
+                rec(userIndex, 2:end) = [itemprofiles(itemIndex,1)' itemprofiles(top(1:3))'];
             case 3
-                rec(userIndex, 2:end) = [itemprofiles(itemIndex,1)' top(1:2)];
+                rec(userIndex, 2:end) = [itemprofiles(itemIndex,1)' itemprofiles(top(1:2))'];
             case 4
-                rec(userIndex, 2:end) = [itemprofiles(itemIndex,1)' top(1)];
+                rec(userIndex, 2:end) = [itemprofiles(itemIndex,1)' itemprofiles(top(1))'];
             otherwise
                 rec(userIndex, 2:end) = itemprofiles(itemIndex(1:5),1);
         end
         
     else
-        rec(userIndex, 2:end) = top;
+        top = setdiff(n_interactionsPerItemIndex(:,1),userInteractionsIndex','stable');
+        rec(userIndex, 2:end) = itemprofiles(top(1:5),1);
+       
     end
     toc
+    
 end
+
+save('userCFSim.mat');

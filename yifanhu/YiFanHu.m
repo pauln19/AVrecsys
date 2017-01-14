@@ -1,4 +1,4 @@
-function [] = YiFanHu( URM, lambda, f, targetUserIndex, sweep )
+function [] = YiFanHu( URM, lambda, f, targetUserIndex, itemsAvailableIndex, sweep )
 %UNTITLED Summary of this function goes here
 %   f = number of latent factors
 %   m = number of users
@@ -12,8 +12,8 @@ function [] = YiFanHu( URM, lambda, f, targetUserIndex, sweep )
 sizeY_URM = size(URM,2);
 sizeX_URM = size(URM,1);
 
-Y = rand(sizeY_URM,f);
-X = zeros(sizeX_URM,f);
+load('Y.mat');
+load('X.mat');
 
 I_X = speye(sizeX_URM);
 I_Y = speye(sizeY_URM);
@@ -35,34 +35,27 @@ for u = targetUserIndex'
 %     delta = zeros(1,sizeY_URM);
 %     for i = 1:sizeY_URM
 %         err(i) = abs(double(logical(URM(u,i))) - X(u,:) * Y(i,:)');
-%     end
-    tic
+%     emnd
     
     C_u = I_Y + 40 * diag(URM(u,:));
     X(u,:) = (A + Y' * (C_u - I_Y) * Y + lambda * I_f)^-1 * Y' * C_u * URM(u,:)';
-    
-    toc
-    
 %     for i = 1:sizeY_URM
 %         delta(i) = err(i) - abs(double(logical(URM(u,i))) - X(u,:) * Y(i,:)');
 %     end
     
 end
-
 %   Constant for the internal loop on users
 B = X' * X;
 
 %   Loop on all items
-for i = 1:sizeY_URM
+for i = itemsAvailableIndex'
     
-    tic
     
     C_i = I_X + 40 * diag(URM(:,i));
-    Y(:,i) = inv(B + X' * (C_i - I_X) * X + lambda * I_f) * X' * C_i * URM(:,i)';
-    
-    toc
-    
+    Y(i,:) = (B + X' * (C_i - I_X) * X + lambda * I_f)^-1 * X' * C_i * URM(:,i);
 end
+
+lambda = 0.9422 * lambda;
 
 end
 
