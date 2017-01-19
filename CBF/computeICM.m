@@ -1,13 +1,13 @@
 function [icm] = computeICM(itemprofiles,tags)
 
 %Tolgo item inattivi
-itemprofiles(itemprofiles(:,11) == 0,:) = [];
+%itemprofiles(itemprofiles(:,11) == 0,:) = [];
 
-%Prendo i tag
-itemprofiles = itemprofiles(:,12:end);
+% %Prendo i tag
+% itemprofiles = itemprofiles(:,12:end);
 
-%Questo per utenti
-% itemprofiles = itemprofiles(:,2:end);
+% Questo per utenti
+itemprofiles = itemprofiles(:,2:end);
 
 tags = sort(tags);
 I = [];
@@ -37,4 +37,4 @@ end
 
 V = ones(1,numel(I));
 
-icm = sparse(I,J,V);
+icm = sparse(I,J,V,40000,100);

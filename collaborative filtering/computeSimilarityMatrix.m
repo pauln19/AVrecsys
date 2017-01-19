@@ -30,11 +30,6 @@ for i=1:size(URM,2)
         value = [uv v];
         
         [sims, idx] = sort(value(:,2), 'descend');
-%         sims(min(size(itemsRatedFromUsers,2),60)+1:end) = [];
-%         idx(min(size(itemsRatedFromUsers,2),60)+1:end) = [];
-%         
-%         value(:,1) = value(idx,1);
-%         value(:,2) = sims;
         
         D(i) = [value(idx,1) sims];
     end
