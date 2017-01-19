@@ -1,0 +1,12 @@
+c:\users\gyo15\documents\visual studio 2015\Projects\RecSys_Framework\RecSys_Framework\bin\Debug\RecSys_Framework.exe.config
+c:\users\gyo15\documents\visual studio 2015\Projects\RecSys_Framework\RecSys_Framework\bin\Debug\RecSys_Framework.exe
+c:\users\gyo15\documents\visual studio 2015\Projects\RecSys_Framework\RecSys_Framework\bin\Debug\RecSys_Framework.pdb
+c:\users\gyo15\documents\visual studio 2015\Projects\RecSys_Framework\RecSys_Framework\obj\Debug\RecSys_Framework.csprojResolveAssemblyReference.cache
+c:\users\gyo15\documents\visual studio 2015\Projects\RecSys_Framework\RecSys_Framework\obj\Debug\RecSys_Framework.exe
+c:\users\gyo15\documents\visual studio 2015\Projects\RecSys_Framework\RecSys_Framework\obj\Debug\RecSys_Framework.pdb
+C:\Users\gyo15\Documents\RecSysProj\Project Repository\AVrecsys\RecSys_Framework\RecSys_Framework\bin\Debug\RecSys_Framework.exe.config
+C:\Users\gyo15\Documents\RecSysProj\Project Repository\AVrecsys\RecSys_Framework\RecSys_Framework\obj\Debug\RecSys_Framework.exe
+C:\Users\gyo15\Documents\RecSysProj\Project Repository\AVrecsys\RecSys_Framework\RecSys_Framework\obj\Debug\RecSys_Framework.pdb
+C:\Users\gyo15\Documents\RecSysProj\Project Repository\AVrecsys\RecSys_Framework\RecSys_Framework\bin\Debug\RecSys_Framework.exe
+C:\Users\gyo15\Documents\RecSysProj\Project Repository\AVrecsys\RecSys_Framework\RecSys_Framework\bin\Debug\RecSys_Framework.pdb
+C:\Users\gyo15\Documents\RecSysProj\Project Repository\AVrecsys\RecSys_Framework\RecSys_Framework\obj\Debug\RecSys_Framework.csprojResolveAssemblyReference.cache
