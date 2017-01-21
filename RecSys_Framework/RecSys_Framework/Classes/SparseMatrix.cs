@@ -235,7 +235,7 @@ namespace RecSys_Framework.Classes
             }
         }
 
-        public Dictionary<int, Dictionary<int, double>> cosineKNN(SparseMatrix m2, double[] norms, int shrink = 2, int knn_number=100)
+        public Dictionary<int, Dictionary<int, double>> cosineKNN(SparseMatrix m2, double[] norms, double[] norms2, int shrink = 2, int knn_number=100)
         {
 
             Dictionary<int, double> row;
@@ -260,7 +260,7 @@ namespace RecSys_Framework.Classes
                             {
                                 if (!alreadyMulCols.Contains(colIndex.Key) && i != colIndex.Key)
                                 {
-                                    similarities.Add(colIndex.Key, (dot(row, m2.GetColumn(colIndex.Key))) / (norms[i - 1] * norms[colIndex.Key - 1] + shrink));
+                                    similarities.Add(colIndex.Key, (dot(row, m2.GetColumn(colIndex.Key))) / (norms[i - 1] * norms2[colIndex.Key - 1] + shrink));
                                     alreadyMulCols.Add(colIndex.Key);
                                 }
 
